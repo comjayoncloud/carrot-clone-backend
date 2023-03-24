@@ -1,2 +1,5 @@
-.database.json
-.node_modules
+#파일
+database.json
+
+#폴더
+node_modules/

@@ -4,14 +4,8 @@
 const express = require("express");
 const router = express.Router();
 
-const getDb = require("../controllers/getDb");
-
 /** Get */
+const getDb = require("../controllers/getDbControll");
 router.get("/", getDb);
 
 module.exports = router;
-
-/** ----------------- 추후 ---------------- */
-/** post */
-/** insert */
-/** delete */

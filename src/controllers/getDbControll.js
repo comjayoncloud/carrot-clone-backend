@@ -13,21 +13,18 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-/** 연결하는곳 db route는 그냥 path만. */
+/** Get */
 const getDb = (req, res) => {
   pool.getConnection(function (err, connection) {
     if (err) throw err;
-
     // Use the connection
     connection.query(
       "SELECT * FROM UserTable",
       function (error, results, fields) {
         // When done with the connection, release it.
         connection.release();
-
         // Handle error after the release.
         if (error) throw error;
-
         // Do something with the results
         return res.send(results);
       }

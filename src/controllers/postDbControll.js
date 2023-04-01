@@ -15,24 +15,25 @@ const pool = mysql.createPool({
 
 /** Post */
 const postDb = (req, res) => {
-  //   pool.getConnection(function (err, connection) {
-  //     if (err) throw err;
-  //     // Use the connection
-  //     connection.query(
-  //       "SELECT * FROM UserTable",
-  //       function (error, results, fields) {
-  //         // When done with the connection, release it.
-  //         connection.release();
-  //         // Handle error after the release.
-  //         if (error) throw error;
-  //         // Do something with the results
-  //         return res.send(results);
-  //       }
-  //     );
-  //   });
-  const a = req.body;
-  console.log(a);
-  res.send("post에 온것을 환영해");
+  const user_data = req.body;
+  console.log(user_data);
+  pool.getConnection(function (err, connection) {
+    if (err) throw err;
+    // Use the connection
+    connection.query(
+      "INSERT INTO UserTable SET ? ",
+      user_data,
+      function (error, results, fields) {
+        // When done with the connection, release it.
+        connection.release();
+        // Handle error after the release.
+        if (error) throw error;
+        // Do something with the results
+        return res.send("data insert successed");
+        // return res.send(user_data);
+      }
+    );
+  });
 };
 
 module.exports = postDb;

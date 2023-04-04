@@ -5,7 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 /** Post */
-const postDb = require("../controllers/postDbControll");
-router.post("/", postDb);
+const signupDb = require("../controllers/signupDbControll");
+router.post("/", signupDb);
 
 module.exports = router;

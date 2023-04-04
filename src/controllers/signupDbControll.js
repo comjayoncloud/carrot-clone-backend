@@ -13,10 +13,10 @@ const pool = mysql.createPool({
   queueLimit: 0,
 });
 
-/** Post */
-const postDb = (req, res) => {
+/** Post - signup  */
+const signupDb = (req, res) => {
+  console.log("sign up API 서버에 요청이 들어왔어요!");
   const user_data = req.body;
-  console.log(user_data);
   pool.getConnection(function (err, connection) {
     if (err) throw err;
     // Use the connection
@@ -36,4 +36,4 @@ const postDb = (req, res) => {
   });
 };
 
-module.exports = postDb;
+module.exports = signupDb;

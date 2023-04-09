@@ -34,29 +34,28 @@ const getUserData = async (promisePool, user_id) => {
   }
 };
 
-const makeJwt = async (data, req_data) => {
+const makeJwt = async (data, req_data, res) => {
   if (data.user_password == req_data.user_password) {
     const payload = {
-      id: 1,
+      type: "JWT",
       username: "testuser",
-      role: "admin",
+      role: "user",
     };
 
-    const secretKey = "your_secret_key";
+    const secretKey = "shhhh";
     const expiresIn = "1h";
 
     const token = await jwt.sign(payload, secretKey, { expiresIn });
     return token;
   } else {
     console.log("Check req's password and db's password");
-    return "jwt를 생성할수가 없습니다";
+    return "wrong";
   }
 };
 
 /** MAIN - Post - login  */
 const loginDb = async (req, res) => {
   console.log("login API 서버에 요청이 들어왔어요!");
-  console.log(req);
   /** req - data */
   const req_data = req.body; // json
 
@@ -70,9 +69,16 @@ const loginDb = async (req, res) => {
 
   // 3. jwt 생성
   const jwt = await makeJwt(data, req_data);
-  console.log(jwt);
 
-  res.send(jwt);
+  if (jwt == "wrong") {
+    res.sendStatus(406);
+  } else {
+    res.status(200).json({
+      code: 200,
+      message: "로그인 성공",
+      jwt: jwt,
+    });
+  }
 };
 
 module.exports = loginDb;

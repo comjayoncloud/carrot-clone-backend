@@ -73,10 +73,20 @@ const loginDb = async (req, res) => {
   if (jwt == "wrong") {
     res.sendStatus(406);
   } else {
+    res.cookie("token", jwt, {
+      /** xss공격으로부터 쿠키보호 . 클라이언트 측 js에서 쿠키에 접근할 수 없음 . 추후 추가적인 xss 공격 방지 기법 써야됌 .*/
+      httpOnly: true,
+      /** 쿠키 만료 시간 */
+      maxAge: 3600000,
+      /** CSRF 공격 막기 위함 */
+      sameSite: "strict",
+
+      /** 쿠키가 HTTPS 연결을 통해서만 전송되도록 강제하게함. 이부분은 배포할때 https 적용후 사용할것.  */
+      // secure: true
+    });
     res.status(200).json({
       code: 200,
       message: "로그인 성공",
-      jwt: jwt,
     });
   }
 };

@@ -24,10 +24,9 @@ const getUserData = async (promisePool, user_id) => {
     const [row, fields] = await promisePool.query(sql_query);
     if (row.length == 0) {
       return "Data is not exist";
-    } else {
-      console.log("Data founded");
-      return row[0];
     }
+    console.log("Data founded");
+    return row[0];
   } catch (err) {
     console.log("DB에 연결할수가 없습니다. sqlState를 확인해주세요");
     return err;
@@ -47,10 +46,9 @@ const makeJwt = async (data, req_data, res) => {
 
     const token = await jwt.sign(payload, secretKey, { expiresIn });
     return token;
-  } else {
-    console.log("Check req's password and db's password");
-    return "wrong";
   }
+  console.log("Check req's password and db's password");
+  return "wrong";
 };
 
 /** MAIN - Post - login  */
@@ -72,23 +70,22 @@ const loginDb = async (req, res) => {
 
   if (jwt == "wrong") {
     res.sendStatus(406);
-  } else {
-    res.cookie("token", jwt, {
-      /** xss공격으로부터 쿠키보호 . 클라이언트 측 js에서 쿠키에 접근할 수 없음 . 추후 추가적인 xss 공격 방지 기법 써야됌 .*/
-      httpOnly: true,
-      /** 쿠키 만료 시간 */
-      maxAge: 3600000,
-      /** CSRF 공격 막기 위함 */
-      sameSite: "strict",
-
-      /** 쿠키가 HTTPS 연결을 통해서만 전송되도록 강제하게함. 이부분은 배포할때 https 적용후 사용할것.  */
-      // secure: true
-    });
-    res.status(200).json({
-      code: 200,
-      message: "로그인 성공",
-    });
   }
+  res.cookie("token", jwt, {
+    /** xss공격으로부터 쿠키보호 . 클라이언트 측 js에서 쿠키에 접근할 수 없음 . 추후 추가적인 xss 공격 방지 기법 써야됌 .*/
+    httpOnly: true,
+    /** 쿠키 만료 시간 */
+    maxAge: 3600000,
+    /** CSRF 공격 막기 위함 */
+    sameSite: "strict",
+
+    /** 쿠키가 HTTPS 연결을 통해서만 전송되도록 강제하게함. 이부분은 배포할때 https 적용후 사용할것.  */
+    // secure: true
+  });
+  res.status(200).json({
+    code: 200,
+    message: "로그인 성공",
+  });
 };
 
 module.exports = loginDb;

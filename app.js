@@ -10,7 +10,12 @@ const port = 3030;
 
 /** Cors 설정 */
 const cors = require("cors");
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 /** db 라우팅 */
 const getDbRouter = require("./src/routes/getDbRouter");

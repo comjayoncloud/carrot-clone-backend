@@ -21,14 +21,16 @@ app.use(
 const getDbRouter = require("./src/routes/getDbRouter");
 const signupDbRouter = require("./src/routes/signupDbRouter");
 const loginDbRouter = require("./src/routes/loginDbRouter");
+const postingDbRouter = require("./src/routes/postingDbRouter");
 /** body-parser 미들웨어에 등록 */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 /** 미들웨어에 get,post 라우터 등록 */
-app.use("/get", getDbRouter);
+app.use("/getpostdb", getDbRouter);
 app.use("/signup", signupDbRouter);
 app.use("/login", loginDbRouter);
+app.use("/posting", postingDbRouter);
 
 /** 서버 시작 */
 app.listen(port, () => {

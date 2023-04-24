@@ -33,7 +33,7 @@ const getUserData = async (promisePool, user_id) => {
   }
 };
 
-const makeJwt = async (data, req_data, res) => {
+const makeJwt = async (data, req_data) => {
   if (data.user_password == req_data.user_password) {
     const payload = {
       type: "JWT",
@@ -41,7 +41,7 @@ const makeJwt = async (data, req_data, res) => {
       role: "user",
     };
 
-    const secretKey = "shhhh";
+    const secretKey = "jaewoo";
     const expiresIn = "1h";
 
     const token = await jwt.sign(payload, secretKey, { expiresIn });
@@ -70,12 +70,14 @@ const loginDb = async (req, res) => {
 
   if (jwt == "wrong") {
     res.sendStatus(406);
+    return;
   }
   res.cookie("token", jwt, {
     /** xss공격으로부터 쿠키보호 . 클라이언트 측 js에서 쿠키에 접근할 수 없음 . 추후 추가적인 xss 공격 방지 기법 써야됌 .*/
-    httpOnly: true,
+    // httpOnly: true,
+
     /** 쿠키 만료 시간 */
-    maxAge: 3600000,
+    maxAge: 360000,
     /** CSRF 공격 막기 위함 */
     sameSite: "strict",
 

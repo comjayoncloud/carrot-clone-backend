@@ -3,33 +3,39 @@ const mysql = require("mysql2");
 const data = require("../../database.json");
 
 /** DB config */
-const pool = mysql.createPool({
-  host: data.host,
-  user: data.user,
-  password: data.password,
-  database: data.database,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+const createPool = async () => {
+  const pool = await mysql.createPool({
+    host: data.host,
+    user: data.user,
+    password: data.password,
+    database: data.database,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+  });
+  return pool;
+};
+
+const getPostData = async (promisePool) => {
+  try {
+    const sql_query = `SELECT * FROM PostTable `;
+    const [row, fields] = await promisePool.query(sql_query);
+    console.log("Data founded");
+    return row;
+  } catch (err) {
+    console.log("DB에 연결할수가 없습니다. sqlState를 확인해주세요");
+
+    return err;
+  }
+};
 
 /** Get */
-const getDb = (req, res) => {
-  pool.getConnection(function (err, connection) {
-    if (err) throw err;
-    // Use the connection
-    connection.query(
-      "SELECT * FROM UserTable",
-      function (error, results, fields) {
-        // When done with the connection, release it.
-        connection.release();
-        // Handle error after the release.
-        if (error) throw error;
-        // Do something with the results
-        return res.send(results);
-      }
-    );
-  });
+const getDb = async (req, res) => {
+  console.log("get Post Data API 서버에 요청이 들어왔어요!");
+  const pool = await createPool();
+  const promisePool = pool.promise();
+  const data = await getPostData(promisePool);
+  res.send(data[0]);
 };
 
 module.exports = getDb;

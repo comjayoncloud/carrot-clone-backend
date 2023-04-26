@@ -10,7 +10,7 @@ const createPool = async () => {
     password: data.password,
     database: data.database,
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 200,
     queueLimit: 0,
   });
   return pool;
@@ -35,7 +35,7 @@ const getDb = async (req, res) => {
   const pool = await createPool();
   const promisePool = pool.promise();
   const data = await getPostData(promisePool);
-  res.send(data[0]);
+  res.send(data);
 };
 
 module.exports = getDb;

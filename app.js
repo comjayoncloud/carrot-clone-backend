@@ -22,6 +22,8 @@ const getDbRouter = require("./src/routes/getDbRouter");
 const signupDbRouter = require("./src/routes/signupDbRouter");
 const loginDbRouter = require("./src/routes/loginDbRouter");
 const postingDbRouter = require("./src/routes/postingDbRouter");
+const searchingDbRouter = require("./src/routes/searchingDbRouter");
+
 /** body-parser 미들웨어에 등록 */
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,6 +33,7 @@ app.use("/getpostdb", getDbRouter);
 app.use("/signup", signupDbRouter);
 app.use("/login", loginDbRouter);
 app.use("/posting", postingDbRouter);
+app.use("/searching", searchingDbRouter);
 
 /** 서버 시작 */
 app.listen(port, () => {

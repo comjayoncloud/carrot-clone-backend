@@ -37,8 +37,7 @@ const postingDb = async (req, res) => {
   const promisePool = pool.promise();
 
   const post = await postDataToDb(promisePool, req_data);
-
-  // console.log(req_data);
+  res.send("글쓰기 성공!");
 };
 
 module.exports = postingDb;
